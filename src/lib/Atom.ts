@@ -57,16 +57,19 @@ class Atom {
 		this.children.push(atom);
 		let angle = 360 / (this.children.length + (this.parentLinkAngle ? 1 : 0));
 		const linkLength = 100;
+		this.links = [];
 		this.children.forEach((n, i) => {
 			const radianAngle =
-				((angle * i + (this.parentLinkAngle ? this.parentLinkAngle : 0)) * Math.PI) / 180;
+				(angle * (i + 1) * Math.PI) / 180 + (this.parentLinkAngle ? this.parentLinkAngle : 0);
+			console.log('Radian Angle:', radianAngle, n.symbol);
+			console.log('ParentAngle:', this.parentLinkAngle, n.symbol);
 			n.pos = {
 				x: this.pos.x + Math.cos(radianAngle) * linkLength,
 				y: this.pos.y + Math.sin(radianAngle) * linkLength
 			};
-			n.parentLinkAngle = 180 + angle;
+			n.parentLinkAngle = Math.PI + radianAngle;
+			this.links.push(new Link(this, n, strength));
 		});
-		this.links.push(new Link(this, atom, strength));
 	}
 }
 

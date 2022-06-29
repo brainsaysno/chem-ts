@@ -12,9 +12,11 @@
 	for (let i = 0; i < 3; i++) {
 		linked.push(new Hydrogen());
 	}
+	linked.push(new Hydrogen());
 	linked.forEach((l) => hydrogen.link(l));
-	linked[0].link(new Hydrogen());
-	linked[0].link(new Hydrogen());
+
+	linked[1].link(new Hydrogen());
+	linked[1].link(new Hydrogen());
 
 	const sketch = (p5: any) => {
 		p5.setup = () => {
