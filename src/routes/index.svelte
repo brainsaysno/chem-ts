@@ -2,7 +2,7 @@
 	import '../app.css';
 
 	import P5 from 'p5-svelte';
-	import { Hydrogen } from '../lib/Atom';
+	import { Atom, Hydrogen } from '../lib/Atom';
 
 	const canvasWidth = 500;
 	const canvasHeight = 500;
@@ -13,8 +13,7 @@
 		linked.push(new Hydrogen());
 	}
 	linked.forEach((l) => hydrogen.link(l));
-	linked[0].link(new Hydrogen(), 2);
-	linked[0].link(new Hydrogen(), 3);
+	linked[0].link(new Hydrogen());
 	linked[0].link(new Hydrogen());
 
 	const sketch = (p5: any) => {

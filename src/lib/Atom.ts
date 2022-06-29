@@ -28,7 +28,8 @@ class Atom {
 	sketch: any;
 	links: Link[];
 	color: Color;
-	constructor(symbol: AtomSymbol, color?: Color) {
+	parentLinkAngle: number | null;
+	constructor(symbol: AtomSymbol, color?: Color, parentLinkAngle?: number) {
 		this.symbol = symbol;
 		this.children = [];
 		this.width = 1;
@@ -39,6 +40,7 @@ class Atom {
 		};
 		this.links = [];
 		this.color = color || Color.Gray;
+		this.parentLinkAngle = parentLinkAngle || null;
 	}
 
 	draw(sketch: any): void {
@@ -53,13 +55,16 @@ class Atom {
 
 	link(atom: Atom, strength?: LinkStrength): void {
 		this.children.push(atom);
-		let angle = 360 / this.children.length;
-		const linkLength = 50;
+		let angle = 360 / (this.children.length + (this.parentLinkAngle ? 1 : 0));
+		const linkLength = 100;
 		this.children.forEach((n, i) => {
+			const radianAngle =
+				((angle * i + (this.parentLinkAngle ? this.parentLinkAngle : 0)) * Math.PI) / 180;
 			n.pos = {
-				x: this.pos.x + Math.cos((angle * i * Math.PI) / 180) * linkLength,
-				y: this.pos.y + Math.sin((angle * i * Math.PI) / 180) * linkLength
+				x: this.pos.x + Math.cos(radianAngle) * linkLength,
+				y: this.pos.y + Math.sin(radianAngle) * linkLength
 			};
+			n.parentLinkAngle = 180 + angle;
 		});
 		this.links.push(new Link(this, atom, strength));
 	}
