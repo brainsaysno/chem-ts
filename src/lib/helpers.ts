@@ -10,7 +10,7 @@ class OrganicChain {
 		this.mainChain = [];
 		this.head = new Carbon();
 		this.mainChain.push(this.head);
-		while (this.mainChain.length < this.mainChainLength) {
+		for (let i = 1; i < mainChainLength; i++) {
 			let newAtom = new Carbon();
 			this.head.link(newAtom);
 			this.mainChain.push(newAtom);

@@ -40,7 +40,7 @@ class Atom {
 	}
 
 	link(atom: Atom, strength?: LinkStrength): void {
-		if (this.links.length >= this.maxLinks) return;
+		if (this.links.length >= this.maxLinks - (this.parentLinkAngle ? 1 : 0)) return;
 		this.children.push(atom);
 		let angle = 360 / (this.children.length + (this.parentLinkAngle ? 1 : 0));
 		const linkLength = 100;
@@ -60,7 +60,7 @@ class Atom {
 	}
 
 	fill(AtomType: AtomInterface) {
-		while (this.links.length != this.maxLinks) {
+		while (this.links.length != this.maxLinks - (this.parentLinkAngle ? 1 : 0)) {
 			this.link(new AtomType());
 		}
 	}
