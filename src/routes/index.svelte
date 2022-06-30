@@ -2,26 +2,19 @@
 	import '../app.css';
 
 	import P5 from 'p5-svelte';
-	import { Atom, Hydrogen } from '../lib/Atom';
+	import { Atom, Carbon, Hydrogen } from '../lib/Atom';
 
 	const canvasWidth = 500;
 	const canvasHeight = 500;
 
-	const hydrogen = new Hydrogen();
-	let linked = [];
-	for (let i = 0; i < 3; i++) {
-		linked.push(new Hydrogen());
-	}
-	linked.push(new Hydrogen());
-	linked.forEach((l) => hydrogen.link(l));
+	const carbon = new Carbon();
 
-	linked[1].link(new Hydrogen());
-	linked[1].link(new Hydrogen());
+	carbon.fill(Hydrogen);
 
 	const sketch = (p5: any) => {
 		p5.setup = () => {
 			p5.createCanvas(canvasWidth, canvasHeight);
-			hydrogen.draw(p5);
+			carbon.draw(p5);
 		};
 	};
 </script>

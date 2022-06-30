@@ -19,6 +19,10 @@ interface PositionInterface {
 	y: number;
 }
 
+interface AtomInterface {
+	new (): Atom;
+}
+
 class Atom {
 	symbol: AtomSymbol;
 	children: Atom[];
@@ -29,6 +33,7 @@ class Atom {
 	links: Link[];
 	color: Color;
 	parentLinkAngle: number | null;
+	maxLinks: number;
 	constructor(symbol: AtomSymbol, color?: Color, parentLinkAngle?: number) {
 		this.symbol = symbol;
 		this.children = [];
@@ -41,19 +46,24 @@ class Atom {
 		this.links = [];
 		this.color = color || Color.Gray;
 		this.parentLinkAngle = parentLinkAngle || null;
+		this.maxLinks = 4;
 	}
 
 	draw(sketch: any): void {
+		const textOffset = 5;
+
 		sketch.fill(this.color);
+		this.links.forEach((l) => l.draw(sketch));
 		sketch.ellipse(this.pos.x, this.pos.y, this.width, this.height);
 		/* Create p5 label with symbol */
-		sketch.text(this.symbol, this.pos.x, this.pos.y);
+		sketch.fill('black');
+		sketch.text(this.symbol, this.pos.x + textOffset, this.pos.y - textOffset);
 		this.children.forEach((n) => n.draw(sketch));
-		this.links.forEach((l) => l.draw(sketch));
 		console.log('drawing, ', this.pos.x, this.pos.y);
 	}
 
 	link(atom: Atom, strength?: LinkStrength): void {
+		if (this.links.length >= this.maxLinks) return;
 		this.children.push(atom);
 		let angle = 360 / (this.children.length + (this.parentLinkAngle ? 1 : 0));
 		const linkLength = 100;
@@ -70,6 +80,12 @@ class Atom {
 			n.parentLinkAngle = Math.PI + radianAngle;
 			this.links.push(new Link(this, n, strength));
 		});
+	}
+
+	fill(AtomType: AtomInterface) {
+		while (this.links.length != this.maxLinks) {
+			this.link(new AtomType());
+		}
 	}
 }
 
@@ -137,7 +153,19 @@ class Hydrogen extends Atom {
 		this.width = this.width * 5;
 		this.height = this.height * 5;
 		this.draw = this.draw.bind(this);
+		this.maxLinks = 1;
 	}
 }
 
-export { Atom, Hydrogen };
+class Carbon extends Atom {
+	constructor() {
+		super(AtomSymbol.Carbon, Color.Red);
+
+		this.width = this.width * 10;
+		this.height = this.height * 10;
+		this.draw = this.draw.bind(this);
+		this.maxLinks = 4;
+	}
+}
+
+export { Atom, Hydrogen, Carbon };
