@@ -1,27 +1,4 @@
-enum AtomSymbol {
-	Hydrogen = 'H',
-	Helium = 'He',
-	Lithium = 'Li',
-	Beryllium = 'Be',
-	Boron = 'B',
-	Carbon = 'C'
-}
-
-enum Color {
-	Blue = 'blue',
-	Red = 'red',
-	Yellow = 'yellow',
-	Gray = 'gray'
-}
-
-interface PositionInterface {
-	x: number;
-	y: number;
-}
-
-interface AtomInterface {
-	new (): Atom;
-}
+import { AtomSymbol, Color, type AtomInterface, type PositionInterface } from './Atom.types';
 
 class Atom {
 	symbol: AtomSymbol;

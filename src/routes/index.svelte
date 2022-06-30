@@ -3,18 +3,18 @@
 
 	import P5 from 'p5-svelte';
 	import { Atom, Carbon, Hydrogen } from '../lib/Atom';
+	import { OrganicChain } from '$lib/helpers';
 
 	const canvasWidth = 500;
 	const canvasHeight = 500;
 
-	const carbon = new Carbon();
-
-	carbon.fill(Hydrogen);
+	const chain = new OrganicChain(3);
+	chain.fill(Hydrogen);
 
 	const sketch = (p5: any) => {
 		p5.setup = () => {
 			p5.createCanvas(canvasWidth, canvasHeight);
-			carbon.draw(p5);
+			chain.draw(p5);
 		};
 	};
 </script>
