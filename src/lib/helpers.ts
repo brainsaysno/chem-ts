@@ -28,9 +28,7 @@ class OrganicChain {
 	}
 
 	translate(x: number, y: number) {
-		this.mainChain.forEach((atom: Atom) => {
-			atom.translate(x, y);
-		});
+		this.mainChain[0].translate(x, y);
 	}
 }
 
