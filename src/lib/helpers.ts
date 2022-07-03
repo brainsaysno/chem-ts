@@ -26,6 +26,12 @@ class OrganicChain {
 	draw(sketch: any) {
 		this.head.draw(sketch);
 	}
+
+	translate(x: number, y: number) {
+		this.mainChain.forEach((atom: Atom) => {
+			atom.translate(x, y);
+		});
+	}
 }
 
 export { OrganicChain };

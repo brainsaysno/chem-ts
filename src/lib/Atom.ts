@@ -11,14 +11,14 @@ class Atom {
 	color: Color;
 	parentLinkAngle: number | null;
 	maxLinks: number;
-	constructor(symbol: AtomSymbol, color?: Color, parentLinkAngle?: number) {
+	constructor(symbol: AtomSymbol, color?: Color, parentLinkAngle?: number, x?: number, y?: number) {
 		this.symbol = symbol;
 		this.children = [];
 		this.width = 1;
 		this.height = 1;
 		this.pos = {
-			x: 200,
-			y: 200
+			x: x ? x : 200,
+			y: y ? y : 200
 		};
 		this.links = [];
 		this.color = color || Color.Gray;
@@ -41,7 +41,10 @@ class Atom {
 
 	link(atom: Atom, strength?: LinkStrength): void {
 		if (this.links.length >= this.maxLinks - (this.parentLinkAngle ? 1 : 0)) return;
+
+		// TODO: Need refactoring to make main chains straight
 		this.children.push(atom);
+
 		let angle = 360 / (this.children.length + (this.parentLinkAngle ? 1 : 0));
 		const linkLength = 100;
 		this.links = [];
@@ -63,6 +66,12 @@ class Atom {
 		while (this.links.length != this.maxLinks - (this.parentLinkAngle ? 1 : 0)) {
 			this.link(new AtomType());
 		}
+	}
+
+	translate(x: number, y: number) {
+		this.pos.x += x;
+		this.pos.y += y;
+		this.children.forEach((n) => n.translate(x, y));
 	}
 }
 
@@ -124,8 +133,8 @@ class Link {
 }
 
 class Hydrogen extends Atom {
-	constructor() {
-		super(AtomSymbol.Hydrogen, Color.Blue);
+	constructor(x?: number, y?: number) {
+		super(AtomSymbol.Hydrogen, Color.Blue, undefined, x, y);
 
 		this.width = this.width * 5;
 		this.height = this.height * 5;

@@ -1,20 +1,38 @@
 <script lang="ts">
 	import '../app.css';
 
-	import P5 from 'p5-svelte';
+	import P5 from 'p5-svelte/P5.svelte';
+	import type { Sketch } from 'p5-svelte/types';
 	import { Atom, Carbon, Hydrogen } from '../lib/Atom';
 	import { OrganicChain } from '$lib/helpers';
 
 	const canvasWidth = 500;
 	const canvasHeight = 500;
 
-	const chain = new OrganicChain(3);
+	const chain = new OrganicChain(2);
 	chain.fill(Hydrogen);
 
-	const sketch = (p5: any) => {
+	const sketch: Sketch = (p5) => {
+		let startDragPosition = {
+			x: 0,
+			y: 0
+		};
 		p5.setup = () => {
 			p5.createCanvas(canvasWidth, canvasHeight);
+		};
+
+		p5.draw = () => {
+			p5.background(255);
 			chain.draw(p5);
+		};
+
+		p5.mousePressed = (e: MouseEvent) => {
+			startDragPosition = { x: p5.mouseX, y: p5.mouseY };
+		};
+
+		p5.mouseDragged = (e: MouseEvent) => {
+			chain.translate(p5.mouseX - startDragPosition.x, p5.mouseY - startDragPosition.y);
+			startDragPosition = { x: p5.mouseX, y: p5.mouseY };
 		};
 	};
 </script>
